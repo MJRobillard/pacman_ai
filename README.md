@@ -1,36 +1,134 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pacman AI Search Visualization
+
+An interactive React application that visualizes different search algorithms used in AI, specifically implemented for Pacman maze navigation. This project demonstrates how various search strategies explore and find paths through mazes with beautiful color-coded visualizations.
+
+## Features
+
+- **Interactive Search Algorithms**: Visualize DFS, BFS, UCS, and A* search algorithms
+- **Multiple Maze Layouts**: Choose from different maze complexities (Tiny, Medium, Big)
+- **Real-time Animation**: Watch algorithms explore the maze step by step
+- **Color-coded Visualization**: 
+  - 🔵 Blue gradient: Explored nodes (brighter = explored earlier)
+  - 🟡 Yellow: Final path found
+  - 🟢 Green: Start position (P)
+  - 🔴 Red: Goal position (G)
+  - ⚫ Gray: Walls
+- **Adjustable Speed**: Control animation speed from instant to slow
+- **Performance Metrics**: See path length, nodes expanded, and search progress
+
+## Search Algorithms Implemented
+
+### 1. Depth-First Search (DFS)
+- Uses a stack (LIFO) data structure
+- Explores as far as possible along each branch before backtracking
+- May not find the shortest path
+- Good for memory efficiency
+
+### 2. Breadth-First Search (BFS)
+- Uses a queue (FIFO) data structure
+- Explores all nodes at the present depth level before moving to the next level
+- Guarantees finding the shortest path (in terms of number of steps)
+- More memory intensive than DFS
+
+### 3. Uniform Cost Search (UCS)
+- Uses a priority queue ordered by path cost
+- Finds the path with the lowest total cost
+- Optimal for finding minimum cost paths
+- More computationally expensive
+
+### 4. A* Search
+- Uses a priority queue ordered by f(n) = g(n) + h(n)
+- g(n) = actual cost from start to current node
+- h(n) = heuristic estimate from current node to goal
+- Most efficient for finding optimal paths
+- Uses Manhattan distance as heuristic
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
 
+### Installation
+
+1. Navigate to the project directory:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd pacman_ai
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Start the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Learn More
+### Usage
 
-To learn more about Next.js, take a look at the following resources:
+1. **Select a Maze**: Choose from Tiny, Medium, or Big maze layouts
+2. **Pick an Algorithm**: Select DFS, BFS, UCS, or A* search
+3. **Adjust Speed**: Use the slider to control animation speed (0ms = instant, 500ms = slow)
+4. **Run Search**: Click "Run Search" to start the visualization
+5. **Watch the Magic**: Observe how different algorithms explore the maze differently
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Technical Implementation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Architecture
+- **React 19** with TypeScript for type safety
+- **Next.js 15** for the framework
+- **Tailwind CSS** for styling
+- **Custom hooks** for state management
 
-## Deploy on Vercel
+### Key Components
+- `PacmanSearch`: Main visualization component that renders the maze
+- `SearchControls`: Control panel for algorithm and maze selection
+- `SearchState`: Type definitions for search state management
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Search Implementation
+Each algorithm is implemented with proper data structures:
+- **DFS**: Uses JavaScript array as stack
+- **BFS**: Uses JavaScript array as queue
+- **UCS**: Uses priority queue with cost-based ordering
+- **A***: Uses priority queue with f(n) = g(n) + h(n) ordering
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Educational Value
+
+This visualization helps understand:
+- How different search strategies work
+- Trade-offs between algorithms (memory vs. optimality)
+- The importance of heuristics in A* search
+- Graph traversal concepts
+- Pathfinding in AI applications
+
+## Maze Format
+
+Mazes are represented as 2D character arrays where:
+- `%` = Wall
+- `.` = Food (goal)
+- `P` = Pacman (start position)
+- ` ` = Empty space
+
+## Future Enhancements
+
+- Additional maze layouts
+- More complex search problems (corners, food collection)
+- Ghost agents and dynamic obstacles
+- Performance comparison charts
+- Export functionality for search results
+
+## Contributing
+
+Feel free to contribute by:
+- Adding new maze layouts
+- Implementing additional search algorithms
+- Improving the visualization
+- Adding new features
+
+## License
+
+This project is for educational purposes and demonstrates AI search algorithms in an interactive format.
