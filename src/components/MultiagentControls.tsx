@@ -60,7 +60,7 @@ export default function MultiagentControls({
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       
       {/* Game Status Card */}
       <div className="card p-6 space-y-4">

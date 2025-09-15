@@ -5,209 +5,17 @@ import PageHeader from '../../components/PageHeader';
 import MultiagentGame from '../../components/MultiagentGame';
 import { GameState, MultiagentAlgorithm, AgentType } from '../../types/multiagent';
 
-export default function DemoPage() {
-  const [layout, setLayout] = useState<any | null>(null);
-  const [isRunning, setIsRunning] = useState(false);
-  const [gameState, setGameState] = useState<GameState | null>(null);
-  const [animationSpeed, setAnimationSpeed] = useState(150);
-  const [score, setScore] = useState(0);
-  const [round, setRound] = useState(1);
-
-  // Load the mediumClassic layout on mount
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const response = await fetch(`/api/multiagent/layouts/mediumClassic`);
-        if (response.ok) {
-          const l = await response.json();
-          setLayout(l);
-        }
-      } catch (e) {
-        console.error('Failed to load mediumClassic:', e);
-      }
-    };
-    load();
-  }, []);
-
-  // Start the game whenever layout is available or when a round increments
-  useEffect(() => {
-    if (!layout) return;
-    startNewGame();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [layout, round]);
-
-  const startNewGame = useCallback(async () => {
-    if (!layout || isRunning) return;
-    setIsRunning(true);
-    setScore(0);
-
-    const initialState: GameState = {
-      pacman: { x: layout.pacman.x, y: layout.pacman.y },
-      ghosts: layout.ghosts.map((g: any) => ({ ...g, scared: false, scaredTime: 0 })),
-      food: layout.food,
-      capsules: layout.capsules || [],
-      score: 0,
-      walls: layout.walls,
-      width: layout.width,
-      height: layout.height,
-      gameOver: false,
-      won: false,
-    };
-
-    setGameState(initialState);
-
-    const result = await runMultiagentAlgorithm(
-      initialState,
-      'reflex',
-      'ReflexAgent',
-      animationSpeed,
-      (newState) => {
-        setGameState(newState);
-        setScore(newState.score);
-        if (newState.gameOver) {
-          setIsRunning(false);
-          // brief pause then restart next round
-          setTimeout(() => setRound((r) => r + 1), 1000);
-        }
-      }
-    );
-
-    setGameState(result);
-    setScore(result.score);
-    setIsRunning(false);
-    setTimeout(() => setRound((r) => r + 1), 1000);
-  }, [layout, isRunning, animationSpeed]);
-
-  return (
-    <div className="min-h-screen text-white">
-      {/* Sticky mobile-friendly header with compact stats */}
-      <div className="sticky top-0 z-30 bg-black/60 backdrop-blur supports-[backdrop-filter]:bg-black/40 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <PageHeader
-            title="Autoplay Demo (Medium Classic)"
-            icon="👾"
-            accentFrom="from-purple-300"
-            accentVia="via-pink-300"
-            accentTo="to-rose-400"
-            right={(
-              <div className="flex items-center gap-4 sm:gap-6 justify-between sm:justify-end w-full">
-                <div className="flex items-center gap-2 text-sm sm:text-base">
-                  <span className="text-yellow-300 font-semibold">Round</span>
-                  <span className="text-heading text-lg text-yellow-300 font-extrabold">{round}</span>
-                </div>
-                <div className="hidden sm:flex items-center gap-3">
-                  <span className="text-caption font-semibold text-purple-200">Speed</span>
-                  <input
-                    type="range"
-                    min="50"
-                    max="1000"
-                    step="50"
-                    value={animationSpeed}
-                    onChange={(e) => setAnimationSpeed(Number(e.target.value))}
-                    disabled={isRunning}
-                    className="slider w-24"
-                    aria-label="Animation speed"
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-caption font-semibold text-purple-200">Score</span>
-                  <span className="text-heading text-lg text-green-400 font-bold">{score}</span>
-                </div>
-                {/* Mobile restart button in header */}
-                <button
-                  onClick={startNewGame}
-                  disabled={isRunning || !layout}
-                  className="btn-pacman px-4 py-2 sm:hidden"
-                >
-                  {isRunning ? (
-                    <span className="flex items-center gap-2">
-                      <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
-                      Running
-                    </span>
-                  ) : (
-                    '🔁 Restart'
-                  )}
-                </button>
-              </div>
-            )}
-          />
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 py-6">
-
-        {/* Info strip */}
-        <div className="card p-4 mb-6">
-          <div className="flex flex-wrap items-center gap-6">
-            <div className="flex items-center gap-3">
-              <span className="text-caption font-semibold text-purple-400 whitespace-nowrap">Strategy:</span>
-              <span className="text-heading">Reflex Agent</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-caption font-semibold text-purple-400 whitespace-nowrap">Layout:</span>
-              <span className="text-heading">{layout?.name ?? '—'}</span>
-            </div>
-            <button
-              onClick={startNewGame}
-              disabled={isRunning || !layout}
-              className="btn-pacman px-6 py-2 ml-auto hidden md:inline-flex"
-            >
-              {isRunning ? (
-                <span className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
-                  Running...
-                </span>
-              ) : (
-                '🔁 Restart'
-              )}
-            </button>
-            <div className="w-full md:hidden">
-              <button
-                onClick={startNewGame}
-                disabled={isRunning || !layout}
-                className="btn-pacman w-full py-3 mt-2"
-              >
-                {isRunning ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
-                    Running...
-                  </span>
-                ) : (
-                  '🔁 Restart'
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Main Game Area */}
-        <div className="w-full">
-          {layout ? (
-            <MultiagentGame
-              layout={layout}
-              gameState={gameState}
-              isRunning={isRunning}
-              algorithm={'reflex' as MultiagentAlgorithm}
-            />
-          ) : (
-            <div className="card p-12 text-center">
-              <div className="text-6xl mb-4">⏳</div>
-              <div className="text-heading text-2xl text-gray-400 mb-2">Loading mediumClassic</div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+// Utilities for standalone playback
+interface GameStateCallback {
+  (state: GameState): void;
 }
 
-// Utilities copied from the Multi-Agent page for standalone playback
 async function runMultiagentAlgorithm(
   initialState: GameState,
   algorithm: MultiagentAlgorithm,
   agentType: AgentType,
   speed: number,
-  onUpdate: (state: GameState) => void
+  onUpdate: GameStateCallback
 ): Promise<GameState> {
   const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -606,4 +414,149 @@ function evaluateState(state: GameState): number {
   return value;
 }
 
+// Global variable for heuristic weights
+let HEURISTIC_WEIGHTS: any = {};
 
+export default function DemoPage() {
+  const [layout, setLayout] = useState<any | null>(null);
+  const [isRunning, setIsRunning] = useState(false);
+  const [gameState, setGameState] = useState<GameState | null>(null);
+  const [animationSpeed, setAnimationSpeed] = useState(150);
+  const [score, setScore] = useState(0);
+  const [round, setRound] = useState(1);
+  
+  // Constant zoom level - adjust this value to change the layout size
+  const ZOOM_LEVEL = 12;
+
+  // Load the mediumClassic layout on mount
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const response = await fetch(`/api/multiagent/layouts/mediumClassic`);
+        if (response.ok) {
+          const l = await response.json();
+          setLayout(l);
+        }
+      } catch (e) {
+        console.error('Failed to load mediumClassic:', e);
+      }
+    };
+    load();
+  }, []);
+
+  // Start the game whenever layout is available or when a round increments
+  useEffect(() => {
+    if (!layout) return;
+    startNewGame();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [layout, round]);
+
+  const startNewGame = useCallback(async () => {
+    if (!layout || isRunning) return;
+    setIsRunning(true);
+    setScore(0);
+
+    const initialState: GameState = {
+      pacman: { x: layout.pacman.x, y: layout.pacman.y },
+      ghosts: layout.ghosts.map((g: any) => ({ ...g, scared: false, scaredTime: 0 })),
+      food: layout.food,
+      capsules: layout.capsules || [],
+      score: 0,
+      walls: layout.walls,
+      width: layout.width,
+      height: layout.height,
+      gameOver: false,
+      won: false,
+    };
+
+    setGameState(initialState);
+
+    const result = await runMultiagentAlgorithm(
+      initialState,
+      'reflex',
+      'ReflexAgent',
+      animationSpeed,
+      (newState) => {
+        setGameState(newState);
+        setScore(newState.score);
+        if (newState.gameOver) {
+          setIsRunning(false);
+          // brief pause then restart next round
+          setTimeout(() => setRound((r) => r + 1), 1000);
+        }
+      }
+    );
+
+    setGameState(result);
+    setScore(result.score);
+    setIsRunning(false);
+    setTimeout(() => setRound((r) => r + 1), 1000);
+  }, [layout, isRunning, animationSpeed]);
+
+  return (
+    <div className="min-h-screen text-white">
+
+
+      {/* Demo Stats Header */}
+      <div className="bg-black/40 backdrop-blur border-b border-white/10">
+        <div className="max-w-4xl mx-auto px-6 py-4">
+          <div className="flex items-center gap-6 justify-end w-full">
+
+            <div className="flex items-center gap-4">
+              <span className="text-caption font-semibold text-purple-200">Speed</span>
+              <input
+                type="range"
+                min="50"
+                max="1000"
+                step="50"
+                value={animationSpeed}
+                onChange={(e) => setAnimationSpeed(Number(e.target.value))}
+                disabled={isRunning}
+                className="slider w-24"
+                aria-label="Animation speed"
+              />
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-caption font-semibold text-purple-200">Score</span>
+              <span className="text-heading text-lg text-green-400 font-bold">{score}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-6 py-6">
+        {/* Demo Info Header */}
+        <div className="mb-6">
+          <PageHeader
+            title="Autoplay Demo (Medium Classic)"
+            icon="👾"
+            accentFrom="from-purple-300"
+            accentVia="via-pink-300"
+            accentTo="to-rose-400"
+            right={null}
+          />
+        </div>
+
+        {/* Info strip */}
+
+        {/* Main Game Area */}
+        <div className="w-full">
+          {layout ? (
+            <MultiagentGame
+              layout={layout}
+              gameState={gameState}
+              isRunning={isRunning}
+              algorithm={'reflex' as MultiagentAlgorithm}
+              cellSize={ZOOM_LEVEL}
+            />
+          ) : (
+            <div className="card p-12 text-center">
+              <div className="text-6xl mb-4">⏳</div>
+              <div className="text-heading text-2xl text-gray-400 mb-2">Loading mediumClassic</div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

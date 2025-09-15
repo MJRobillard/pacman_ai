@@ -23,7 +23,7 @@ export default function SearchControls({
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       
       {/* Maze Selection Card */}
       <div className="space-y-3">

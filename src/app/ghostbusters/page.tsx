@@ -194,7 +194,7 @@ export default function GhostbustersPage() {
         </div>
 
         {/* Two-column layout: Board (left) and Settings/Info (right) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Board Card */}
           <div className="card p-8 space-y-4">
             <div className="flex justify-between items-center mb-4">
@@ -237,7 +237,7 @@ export default function GhostbustersPage() {
             </div>
 
             {/* Board footer stats */}
-            <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
               <div>
                 <div className="text-caption text-gray-400">Belief mass</div>
                 <div className="text-green-400 font-bold">{Object.values(belief).reduce((a, b) => a + b, 0).toFixed(3)}</div>
@@ -275,7 +275,7 @@ export default function GhostbustersPage() {
             {/* Settings Card */}
             <div className="card p-8 space-y-4">
               <div className="text-heading text-2xl text-yellow-400 font-semibold mb-4">Inference Settings</div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-6">
                 <label className="flex items-center justify-between">
                   <span>Particles</span>
                   <input type="number" className="input-pacman w-28" value={numParticles} min={50} max={10000} step={50} onChange={e => setNumParticles(Number(e.target.value))} />

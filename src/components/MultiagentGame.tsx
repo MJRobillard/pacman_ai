@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { MultiagentGameProps } from '../types/multiagent';
 import { PacmanVisual, GhostVisual, FoodVisual, CapsuleVisual } from './GameVisuals';
 
-export default function MultiagentGame({ layout, gameState, isRunning, algorithm }: MultiagentGameProps) {
+export default function MultiagentGame({ layout, gameState, isRunning, algorithm, cellSize: propCellSize }: MultiagentGameProps) {
   const [showGhosts, setShowGhosts] = useState(true);
   const [showFood, setShowFood] = useState(true);
   const [showCapsules, setShowCapsules] = useState(true);
@@ -21,25 +21,14 @@ export default function MultiagentGame({ layout, gameState, isRunning, algorithm
   console.log('MultiagentGame render - gameState:', gameState);
   console.log('MultiagentGame render - layout:', layout);
 
-  // Responsive cell sizing: fit grid width within available container width while keeping aspect
+  // Fixed cell sizing: use provided cellSize or default
   useEffect(() => {
-    const updateCellSize = () => {
-      if (!containerRef.current) return;
-      const availableWidth = containerRef.current.clientWidth;
-      if (!availableWidth || layout?.width <= 0) {
-        setCellSize(24);
-        return;
-      }
-      const maxCellByWidth = Math.floor(availableWidth / layout.width);
-      // Smaller minimum to better fit mobile; cap a bit lower
-      const nextSize = Math.max(4, Math.min(20, maxCellByWidth));
-      setCellSize(nextSize);
-    };
-
-    updateCellSize();
-    window.addEventListener('resize', updateCellSize);
-    return () => window.removeEventListener('resize', updateCellSize);
-  }, [layout?.width]);
+    if (propCellSize !== undefined) {
+      setCellSize(propCellSize);
+    } else {
+      setCellSize(16); // Fixed default size
+    }
+  }, [propCellSize]);
 
   // Wheel zoom
   useEffect(() => {
@@ -192,12 +181,18 @@ export default function MultiagentGame({ layout, gameState, isRunning, algorithm
       </div>
 
       {/* Game Board with Zoom & Pan */}
-      <div className="flex justify-center mb-4">
-        <div className="maze-container w-full max-w-full">
+      <div className="flex justify-center mb-6">
+        <div className="maze-container">
           <div
             ref={containerRef}
             className="board-viewport"
-            style={{ touchAction: 'none' }}
+            style={{ 
+              touchAction: 'none',
+              width: `${layout.width * cellSize}px`,
+              height: `${layout.height * cellSize}px`,
+              maxWidth: '800px',
+              maxHeight: '600px'
+            }}
           >
             <div
               ref={transformRef}
@@ -210,8 +205,10 @@ export default function MultiagentGame({ layout, gameState, isRunning, algorithm
               <div 
                 className="grid gap-0"
                 style={{
-                  gridTemplateColumns: `repeat(${layout.width}, 1fr)`,
-                  gridTemplateRows: `repeat(${layout.height}, 1fr)`
+                  gridTemplateColumns: `repeat(${layout.width}, ${cellSize}px)`,
+                  gridTemplateRows: `repeat(${layout.height}, ${cellSize}px)`,
+                  width: `${layout.width * cellSize}px`,
+                  height: `${layout.height * cellSize}px`
                 }}
               >
                 {Array.from({ length: layout.height }, (_, y) =>
@@ -240,17 +237,17 @@ export default function MultiagentGame({ layout, gameState, isRunning, algorithm
       </div>
 
       {/* Compact stats row under board */}
-      <div className="flex items-center justify-center gap-6 text-lg md:text-xl mb-4" aria-label="Summary stats">
-        <div className="flex items-center gap-2"><span role="img" aria-label="food">🍒</span><span className="text-green-400 font-bold">{gameState?.food.length ?? 0}</span></div>
-        <div className="flex items-center gap-2"><span role="img" aria-label="capsules">💊</span><span className="text-blue-300 font-bold">{gameState?.capsules.length ?? 0}</span></div>
-        <div className="flex items-center gap-2"><span role="img" aria-label="ghosts">👻</span><span className="text-red-400 font-bold">{gameState ? gameState.ghosts.filter(g => g.x !== -1 && g.y !== -1).length : 0}</span></div>
+      <div className="flex items-center justify-center gap-8 text-xl mb-6" aria-label="Summary stats">
+        <div className="flex items-center gap-3"><span role="img" aria-label="food">🍒</span><span className="text-green-400 font-bold">{gameState?.food.length ?? 0}</span></div>
+        <div className="flex items-center gap-3"><span role="img" aria-label="capsules">💊</span><span className="text-blue-300 font-bold">{gameState?.capsules.length ?? 0}</span></div>
+        <div className="flex items-center gap-3"><span role="img" aria-label="ghosts">👻</span><span className="text-red-400 font-bold">{gameState ? gameState.ghosts.filter(g => g.x !== -1 && g.y !== -1).length : 0}</span></div>
       </div>
 
       {/* Details accordion */}
       <details className="card p-4">
         <summary className="cursor-pointer text-yellow-400 font-semibold">Details</summary>
         {gameState && (
-          <div className="mt-4 grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
+          <div className="mt-6 grid grid-cols-2 md:grid-cols-5 gap-6 text-sm">
             <div>
               <span className="text-blue-300">Food Remaining</span>
               <div className="text-green-400 font-bold">{gameState.food.length}</div>
@@ -281,16 +278,9 @@ export default function MultiagentGame({ layout, gameState, isRunning, algorithm
         )}
       </details>
 
-      {/* Touch controls overlay (mobile) */}
-      <div className="touch-dpad md:hidden" aria-hidden="true">
-        <button className="dpad-btn dpad-up" onClick={() => console.log('Swipe Up')}>↑</button>
-        <button className="dpad-btn dpad-left" onClick={() => console.log('Swipe Left')}>←</button>
-        <button className="dpad-btn dpad-right" onClick={() => console.log('Swipe Right')}>→</button>
-        <button className="dpad-btn dpad-down" onClick={() => console.log('Swipe Down')}>↓</button>
-      </div>
 
       {/* Legend */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm mt-4">
+      <div className="grid grid-cols-5 gap-6 text-sm mt-6">
         <div className="legend-item">
           <div className="w-6 h-6 flex items-center justify-center">
             <PacmanVisual size={24} />
@@ -340,7 +330,7 @@ export default function MultiagentGame({ layout, gameState, isRunning, algorithm
               <div className="text-heading text-xl text-yellow-400 font-semibold">Display & Accessibility</div>
               <button className="btn-secondary px-3 py-2" onClick={() => setBottomSheetOpen(false)}>Close</button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <label className="toggle-row">
                 <span>Show Ghosts</span>
                 <input type="checkbox" className="toggle-switch" checked={showGhosts} onChange={e => setShowGhosts(e.target.checked)} />

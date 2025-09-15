@@ -181,7 +181,7 @@ export default function MultiagentPage() {
         />
 
         {/* Quick Controls Bar */}
-        <div className="card p-4 mb-6">
+        <div className="card p-4 mb-8">
           <div className="flex flex-wrap items-center gap-6">
             {/* Algorithm Selection */}
             <div className="flex items-center gap-3">

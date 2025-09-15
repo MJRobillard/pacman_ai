@@ -62,6 +62,7 @@ export interface MultiagentGameProps {
   gameState: GameState | null;
   isRunning: boolean;
   algorithm: MultiagentAlgorithm;
+  cellSize?: number;
 }
 
 export interface HeuristicWeights {

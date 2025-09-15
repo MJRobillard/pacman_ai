@@ -768,6 +768,13 @@ body.modal-open {
   overflow: hidden;
 }
 
+/* Desktop navigation labels */
+@media (min-width: 1024px) {
+  .nav-label-desktop {
+    display: inline !important;
+  }
+}
+
 /* Enhanced Maze Container */
 .maze-container {
   background: var(--maze-bg);

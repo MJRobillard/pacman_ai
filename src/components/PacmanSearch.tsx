@@ -223,7 +223,7 @@ export default function PacmanSearch({ maze, searchState, isRunning, multiSearch
       </div>
 
       {/* Legend Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-6 mb-8">
         <div className="legend-item">
           <div className="w-10 h-10 flex items-center justify-center">
             <PacmanVisual size={36} />
