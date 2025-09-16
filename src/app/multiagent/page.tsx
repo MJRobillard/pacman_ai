@@ -152,7 +152,7 @@ export default function MultiagentPage() {
     return (
       <div className="min-h-screen text-white flex items-center justify-center">
         <div className="text-center">
-          <div className="text-4xl mb-4">👻</div>
+          <div className="text-4xl mb-4">Loading...</div>
           <div className="text-2xl text-yellow-400 glow-yellow">Loading Multi-Agent Pacman...</div>
         </div>
       </div>
@@ -166,7 +166,7 @@ export default function MultiagentPage() {
       <div className="max-w-7xl mx-auto px-4 py-6">
         <PageHeader
           title="Multi‑Agent Pacman AI"
-          icon="👻"
+          icon=""
           accentFrom="from-purple-300"
           accentVia="via-pink-300"
           accentTo="to-rose-400"
@@ -175,7 +175,7 @@ export default function MultiagentPage() {
               onClick={() => setShowConfigModal(true)}
               className="btn-secondary px-6 py-3"
             >
-              ⚙️ Heuristics
+              Heuristics
             </button>
           )}
         />
@@ -266,7 +266,7 @@ export default function MultiagentPage() {
                   Running...
                 </span>
               ) : (
-                '🎮 Start Game'
+                'Start Game'
               )}
             </button>
           </div>
@@ -283,7 +283,7 @@ export default function MultiagentPage() {
             />
           ) : (
             <div className="card p-12 text-center">
-              <div className="text-6xl mb-4">🎯</div>
+              <div className="text-6xl mb-4">No Layout</div>
               <div className="text-heading text-2xl text-gray-400 mb-2">No Layout Selected</div>
               <div className="text-caption">Click Settings to choose a layout</div>
             </div>
@@ -304,7 +304,7 @@ export default function MultiagentPage() {
               Running...
             </span>
           ) : (
-            '🎮 Start Game'
+            'Start Game'
           )}
         </button>
       </div>

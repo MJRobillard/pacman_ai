@@ -26,7 +26,7 @@ export default function MultiagentGame({ layout, gameState, isRunning, algorithm
     if (propCellSize !== undefined) {
       setCellSize(propCellSize);
     } else {
-      setCellSize(16); // Fixed default size
+      setCellSize(32); // Fixed default size
     }
   }, [propCellSize]);
 
@@ -238,9 +238,9 @@ export default function MultiagentGame({ layout, gameState, isRunning, algorithm
 
       {/* Compact stats row under board */}
       <div className="flex items-center justify-center gap-8 text-xl mb-6" aria-label="Summary stats">
-        <div className="flex items-center gap-3"><span role="img" aria-label="food">🍒</span><span className="text-green-400 font-bold">{gameState?.food.length ?? 0}</span></div>
-        <div className="flex items-center gap-3"><span role="img" aria-label="capsules">💊</span><span className="text-blue-300 font-bold">{gameState?.capsules.length ?? 0}</span></div>
-        <div className="flex items-center gap-3"><span role="img" aria-label="ghosts">👻</span><span className="text-red-400 font-bold">{gameState ? gameState.ghosts.filter(g => g.x !== -1 && g.y !== -1).length : 0}</span></div>
+        <div className="flex items-center gap-3"><span className="text-green-400 font-bold">{gameState?.food.length ?? 0}</span></div>
+        <div className="flex items-center gap-3"><span className="text-blue-300 font-bold">{gameState?.capsules.length ?? 0}</span></div>
+        <div className="flex items-center gap-3"><span className="text-red-400 font-bold">{gameState ? gameState.ghosts.filter(g => g.x !== -1 && g.y !== -1).length : 0}</span></div>
       </div>
 
       {/* Details accordion */}
@@ -319,7 +319,7 @@ export default function MultiagentGame({ layout, gameState, isRunning, algorithm
         onClick={() => setBottomSheetOpen(true)}
         aria-label="Open options"
       >
-        ⚙️ Options
+        Options
       </button>
 
       {/* Bottom Sheet */}

@@ -212,7 +212,7 @@ export default function MultiagentControls({
             Running...
           </span>
         ) : (
-          '🎮 Start Game'
+          'Start Game'
         )}
       </button>
 

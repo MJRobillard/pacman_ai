@@ -101,7 +101,7 @@ export default function GhostbustersPage() {
       <div className="max-w-7xl mx-auto px-4 py-6">
         <PageHeader
           title="Ghostbusters Inference"
-          icon="🎯"
+          icon=""
           accentFrom="from-yellow-300"
           accentVia="via-red-300"
           accentTo="to-rose-400"
@@ -187,7 +187,7 @@ export default function GhostbustersPage() {
                   Running...
                 </span>
               ) : (
-                '🎯 Start Inference'
+                'Start Inference'
               )}
             </button>
           </div>
@@ -348,7 +348,7 @@ export default function GhostbustersPage() {
               Running...
             </span>
           ) : (
-            '🎯 Start Inference'
+            'Start Inference'
           )}
         </button>
       </div>

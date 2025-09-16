@@ -303,7 +303,7 @@ export default function PacmanSearch({ maze, searchState, isRunning, multiSearch
         )}
         {(searchState || multiSearchState) && !isRunning && !showPath && (
           <div className="status-badge status-badge-info">
-            <span>⏸️</span>
+            <span>Paused</span>
             <span>Search paused</span>
           </div>
         )}

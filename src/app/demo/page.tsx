@@ -529,7 +529,7 @@ export default function DemoPage() {
         <div className="mb-6">
           <PageHeader
             title="Autoplay Demo (Medium Classic)"
-            icon="👾"
+            icon=""
             accentFrom="from-purple-300"
             accentVia="via-pink-300"
             accentTo="to-rose-400"
@@ -551,7 +551,7 @@ export default function DemoPage() {
             />
           ) : (
             <div className="card p-12 text-center">
-              <div className="text-6xl mb-4">⏳</div>
+              <div className="text-6xl mb-4">Loading...</div>
               <div className="text-heading text-2xl text-gray-400 mb-2">Loading mediumClassic</div>
             </div>
           )}
