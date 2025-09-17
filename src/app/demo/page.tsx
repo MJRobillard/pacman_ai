@@ -426,7 +426,7 @@ export default function DemoPage() {
   const [round, setRound] = useState(1);
   
   // Constant zoom level - adjust this value to change the layout size
-  const ZOOM_LEVEL = 12;
+  const ZOOM_LEVEL = 18;
 
   // Load the mediumClassic layout on mount
   useEffect(() => {
@@ -501,30 +501,18 @@ export default function DemoPage() {
       <div className="bg-black/40 backdrop-blur border-b border-white/10">
         <div className="max-w-4xl mx-auto px-6 py-4">
           <div className="flex items-center gap-6 justify-end w-full">
-
-            <div className="flex items-center gap-4">
-              <span className="text-caption font-semibold text-purple-200">Speed</span>
-              <input
-                type="range"
-                min="50"
-                max="1000"
-                step="50"
-                value={animationSpeed}
-                onChange={(e) => setAnimationSpeed(Number(e.target.value))}
-                disabled={isRunning}
-                className="slider w-24"
-                aria-label="Animation speed"
-              />
-            </div>
-            <div className="flex items-center gap-3">
+          </div>
+          <div className="flex items-center gap-3">
               <span className="text-caption font-semibold text-purple-200">Score</span>
               <span className="text-heading text-lg text-green-400 font-bold">{score}</span>
             </div>
-          </div>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-6 py-6">
+      <div className="container mx-auto px-4 py-4">
+        <nav className="mb-6">
+          <h1 className="text-3xl font-bold text-yellow-400 glow-yellow">Pacman AI</h1>
+        </nav>
         {/* Demo Info Header */}
         <div className="mb-6">
           <PageHeader
@@ -535,12 +523,19 @@ export default function DemoPage() {
             accentTo="to-rose-400"
             right={null}
           />
+<p style={{ marginTop: '0.75rem', fontSize: '1.125rem', fontWeight: '600', color: '#F3F4F6', fontStyle: 'italic', padding: '1.25rem', borderRadius: '1.5rem', border: '1px solid rgba(55, 65, 81, 0.5)', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)', background: 'linear-gradient(to right, rgba(31, 41, 55, 0.8), rgba(17, 24, 39, 0.8), rgba(0, 0, 0, 0.8))' }}>
+  <span style={{ display: 'block', color: '#F87171' }}>Reflex Agents</span>
+  <span style={{ display: 'block', marginLeft: '0.75rem', color: '#E5E7EB' }}>your buddy who only knows one move in Smash</span>
+
+  <span style={{ display: 'block', marginTop: '0.75rem', color: '#4ADE80' }}>Expectimax Agents</span>
+  <span style={{ display: 'block', marginLeft: '0.75rem', color: '#E5E7EB' }}>the crew plotting wombo combos three steps ahead, awaiting on the multiagent page</span>
+</p>
         </div>
 
         {/* Info strip */}
 
         {/* Main Game Area */}
-        <div className="w-full">
+        <div className="flex flex-col items-center w-auto mx-auto">
           {layout ? (
             <MultiagentGame
               layout={layout}
@@ -548,6 +543,7 @@ export default function DemoPage() {
               isRunning={isRunning}
               algorithm={'reflex' as MultiagentAlgorithm}
               cellSize={ZOOM_LEVEL}
+              verticalLegend={true}
             />
           ) : (
             <div className="card p-12 text-center">

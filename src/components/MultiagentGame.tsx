@@ -4,12 +4,13 @@ import { useState, useEffect, useRef } from 'react';
 import { MultiagentGameProps } from '../types/multiagent';
 import { PacmanVisual, GhostVisual, FoodVisual, CapsuleVisual } from './GameVisuals';
 
-export default function MultiagentGame({ layout, gameState, isRunning, algorithm, cellSize: propCellSize }: MultiagentGameProps) {
+export default function MultiagentGame({ layout, gameState, isRunning, algorithm, cellSize: propCellSize, verticalLegend = false }: MultiagentGameProps & { verticalLegend?: boolean }) {
   const [showGhosts, setShowGhosts] = useState(true);
   const [showFood, setShowFood] = useState(true);
   const [showCapsules, setShowCapsules] = useState(true);
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [verticalLayout, setVerticalLayout] = useState(verticalLegend);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const transformRef = useRef<HTMLDivElement | null>(null);
   const [cellSize, setCellSize] = useState<number>(24);
@@ -170,11 +171,11 @@ export default function MultiagentGame({ layout, gameState, isRunning, algorithm
 
   return (
     <div className={`bg-gray-800 rounded-lg p-6 ${reduceMotion ? 'reduce-motion' : ''}`}>
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col justify-center items-center mb-4">
         <h2 className="text-2xl font-bold text-yellow-400 glow-yellow">
-          {layout.name.replace(/([A-Z])/g, ' $1').trim()}
+          {layout.name.replace(/([A-Z])/g, ' $1').replace(/^\w/, c => c.toUpperCase()).trim()}
         </h2>
-        <div className="text-sm text-blue-300">
+        <div className="text-sm text-blue-300 text-center">
           <div>Algorithm: <span className="text-green-400 font-bold">{algorithm}</span></div>
           <div>Score: <span className="text-yellow-400 font-bold">{gameState?.score || 0}</span></div>
         </div>
@@ -280,32 +281,32 @@ export default function MultiagentGame({ layout, gameState, isRunning, algorithm
 
 
       {/* Legend */}
-      <div className="grid grid-cols-5 gap-6 text-sm mt-6">
-        <div className="legend-item">
+      <div className={`grid ${verticalLayout ? 'grid-cols-1' : 'grid-cols-5'} gap-6 text-sm mt-6`}>
+        <div className="legend-item flex items-center space-x-2">
           <div className="w-6 h-6 flex items-center justify-center">
             <PacmanVisual size={24} />
           </div>
           <span className="text-yellow-400 font-bold">Pacman</span>
         </div>
-        <div className="legend-item">
+        <div className="legend-item flex items-center space-x-2">
           <div className="w-6 h-6 flex items-center justify-center">
             <GhostVisual size={24} colorIndex={0} />
           </div>
           <span className="text-red-400 font-bold">Ghost</span>
         </div>
-        <div className="legend-item">
+        <div className="legend-item flex items-center space-x-2">
           <div className="w-6 h-6 flex items-center justify-center">
             <GhostVisual size={24} colorIndex={0} isScared={true} />
           </div>
           <span className="text-white font-bold">Scared Ghost</span>
         </div>
-        <div className="legend-item">
+        <div className="legend-item flex items-center space-x-2">
           <div className="w-6 h-6 flex items-center justify-center">
             <FoodVisual size={24} />
           </div>
           <span className="text-yellow-400 font-bold">Food</span>
         </div>
-        <div className="legend-item">
+        <div className="legend-item flex items-center space-x-2">
           <div className="w-6 h-6 flex items-center justify-center">
             <CapsuleVisual size={24} />
           </div>
@@ -346,6 +347,10 @@ export default function MultiagentGame({ layout, gameState, isRunning, algorithm
               <label className="toggle-row">
                 <span>Minimal animations</span>
                 <input type="checkbox" className="toggle-switch" checked={reduceMotion} onChange={e => setReduceMotion(e.target.checked)} />
+              </label>
+              <label className="toggle-row">
+                <span>Vertical Legend Layout</span>
+                <input type="checkbox" className="toggle-switch" checked={verticalLayout} onChange={e => setVerticalLayout(e.target.checked)} />
               </label>
             </div>
           </div>
