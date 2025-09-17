@@ -498,23 +498,14 @@ export default function DemoPage() {
 
 
       {/* Demo Stats Header */}
-      <div className="bg-black/40 backdrop-blur border-b border-white/10">
-        <div className="max-w-4xl mx-auto px-6 py-4">
-          <div className="flex items-center gap-6 justify-end w-full">
-          </div>
-          <div className="flex items-center gap-3">
-              <span className="text-caption font-semibold text-purple-200">Score</span>
-              <span className="text-heading text-lg text-green-400 font-bold">{score}</span>
-            </div>
-        </div>
-      </div>
+
 
       <div className="container mx-auto px-4 py-4">
         <nav className="mb-6">
           <h1 className="text-3xl font-bold text-yellow-400 glow-yellow">Pacman AI</h1>
         </nav>
         {/* Demo Info Header */}
-        <div className="mb-6">
+        <div className="mb-4">
           <PageHeader
             title="Autoplay Demo (Medium Classic)"
             icon=""
