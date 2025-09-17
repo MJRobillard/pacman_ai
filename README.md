@@ -132,3 +132,17 @@ Feel free to contribute by:
 ## License
 
 This project is for educational purposes and demonstrates AI search algorithms in an interactive format.
+
+## Project Metadata
+
+### Pacman AI Search Visualization
+
+**Short Description**: An application to showcase advanced AI search algorithms through something many know and love: Pacman. Featuring Depth-First Search (DFS), Breadth-First Search (BFS), Uniform Cost Search (UCS), A* Search, and multi-agent strategies like Minimax, Alpha-Beta Pruning, and Expectimax.
+
+**Technologies Used**:
+- **Frontend**: React.js, Next.js
+- **Styling**: Tailwind CSS
+- **UI Components**: Headless UI, Heroicons
+- **Development Tools**: TypeScript, Node.js, npm
+- **Algorithms**: DFS, BFS, UCS, A* Search, Reflex Agent, Minimax, Alpha-Beta Pruning, Expectimax
+- **Visualization**: Custom real-time animations for maze exploration
