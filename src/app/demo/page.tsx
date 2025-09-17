@@ -523,12 +523,13 @@ export default function DemoPage() {
             accentTo="to-rose-400"
             right={null}
           />
-<p style={{ marginTop: '0.75rem', fontSize: '1.125rem', fontWeight: '600', color: '#F3F4F6', fontStyle: 'italic', padding: '1.25rem', borderRadius: '1.5rem', border: '1px solid rgba(55, 65, 81, 0.5)', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)', background: 'linear-gradient(to right, rgba(31, 41, 55, 0.8), rgba(17, 24, 39, 0.8), rgba(0, 0, 0, 0.8))' }}>
+<p style={{ marginTop: '0.75rem', fontSize: '1rem', fontWeight: '600', color: '#F3F4F6', fontStyle: 'italic', padding: '1.25rem', borderRadius: '1.5rem', border: '1px solid rgba(55, 65, 81, 0.5)', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)', background: 'linear-gradient(to right, rgba(31, 41, 55, 0.8), rgba(17, 24, 39, 0.8), rgba(0, 0, 0, 0.8))' }}>
   <span style={{ display: 'block', color: '#F87171' }}>Reflex Agents</span>
   <span style={{ display: 'block', marginLeft: '0.75rem', color: '#E5E7EB' }}>your buddy who only knows one move in Smash</span>
 
   <span style={{ display: 'block', marginTop: '0.75rem', color: '#4ADE80' }}>Expectimax Agents</span>
-  <span style={{ display: 'block', marginLeft: '0.75rem', color: '#E5E7EB' }}>the crew plotting wombo combos three steps ahead, awaiting on the multiagent page</span>
+  <span style={{ display: 'block', marginLeft: '0.75rem', color: '#E5E7EB' }}>The wombo combo reigning champions, three steps ahead, check out the multiagent page to see</span>
+  <a href="/multiagent" target="_blank" rel="noopener noreferrer" style={{ display: 'block', marginLeft: '0.75rem', marginTop: '0.5rem', color: '#4ADE80', textDecoration: 'underline' }}>Visit Multiagent Page</a>
 </p>
         </div>
 
